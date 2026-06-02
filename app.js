@@ -305,17 +305,26 @@ function installLayers() {
 }
 
 function installPanelToggles() {
+  // Функция синхронизации текста кнопок с состоянием панелей
+  const syncButtons = () => {
+    infoToggle.textContent = infoPanel.classList.contains('is-collapsed') ? 'Показать' : 'Скрыть';
+    attributionToggle.textContent = attributionPanel.classList.contains('is-collapsed') ? 'Источники' : 'Скрыть';
+  };
+
   infoToggle.addEventListener('click', () => {
-    const collapsed = infoPanel.classList.toggle('is-collapsed');
-    infoToggle.textContent = collapsed ? 'Показать' : 'Скрыть';
-    infoToggle.setAttribute('aria-expanded', String(!collapsed));
+    infoPanel.classList.toggle('is-collapsed');
+    syncButtons();
+    infoToggle.setAttribute('aria-expanded', String(!infoPanel.classList.contains('is-collapsed')));
   });
 
   attributionToggle.addEventListener('click', () => {
-    const collapsed = attributionPanel.classList.toggle('is-collapsed');
-    attributionToggle.textContent = collapsed ? 'Источники' : 'Скрыть';
-    attributionToggle.setAttribute('aria-expanded', String(!collapsed));
+    attributionPanel.classList.toggle('is-collapsed');
+    syncButtons();
+    attributionToggle.setAttribute('aria-expanded', String(!attributionPanel.classList.contains('is-collapsed')));
   });
+
+  // Устанавливаем правильные тексты при загрузке
+  syncButtons();
 }
 
 function eventFeatureAtPoint(point) {
